@@ -5,6 +5,32 @@ const DLL = require('../lib/DLL');
 
 function deleteAllNodesWithValue(list, value) {
   // your code here
+  let current = list.head;
+  while (current) {
+    // Store next pointer since current might be deleted
+    const nextNode = current.next;
+    if (current.data === value) {
+      // If current is head
+      if (current === list.head) {
+        list.head = current.next;
+        if (list.head) {
+          list.head.prev = null;
+        } else {
+          list.tail = null; // List is now empty
+        }
+      } else if (current === list.tail) { // If current is tail
+        list.tail = current.prev;
+        if (list.tail) {
+          list.tail.next = null;
+        }
+      } else { // Node is in the middle
+        current.prev.next = current.next;
+        current.next.prev = current.prev;
+      }
+      list.size--;
+    }
+    current = nextNode;
+  }
 }
 
 const list = new DLL();
